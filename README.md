@@ -5,7 +5,7 @@ laid out like Herdr's home folder (`mods/<name>/`) with a `RECIPE.md` describing
 
 | Folder | What it is |
 | --- | --- |
-| [issues](issues/) | GitHub issues and PRs in Herdr: a table, an in-app viewer (PR checks, diffs, merge), and a Create worktree dialog that starts work from a branch (including remote-only), an issue, a PR or a new name, with Claude's prompt prefilled. Two mods: `issues` and `new-worktree`. |
+| [issues](issues/) | GitHub issues, PRs and Projects in Herdr: a table, a Projects board, an in-app viewer (PR checks, diffs, merge), and a Create worktree dialog that starts work from a branch (including remote-only), an issue, a PR or a new name, with Claude's prompt prefilled. Two mods: `issues` and `new-worktree`. |
 | [live-ports](live-ports/) | Listening ports grouped by the space that started them, as a status-bar button and popup with Open and Stop. |
 | [usage-limits](usage-limits/) | Claude Code and Codex usage windows in a status bar, with a hover panel and session context. Reads the CLIs, never tokens. |
 | [hibernate](hibernate/) | Put a space to sleep to free CPU and memory and wake it as it was (Claude and Codex resume the same conversation), and resume what a reboot stopped. Settings for waking on open or on start. |
