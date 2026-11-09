@@ -61,6 +61,8 @@ issue, a PR or a new name, with Claude's prompt prefilled. Two mods: `issues` an
   - Issue and PR picks write `branch.<b>.herdr-issue` / `herdr-pr` (`owner/repo#N`) to git config.
   - With Claude as the agent, the issue/PR task is pasted into Claude's prompt once it's ready
     (past the folder-trust prompt), not sent; the clipboard is restored. Remote: clipboard + toast.
+    The task comes from the `issue_prompt` / `pr_prompt` templates (`{number}`, `{title}`,
+    `{repo}`, `{branch}`): the project's, else `mod.json` settings, else the built-in wording.
   - A dialog creates or opens at most once (⌘↵ held or pressed twice makes one space).
   - **Worktree setup hooks**: the setup script is the repo's team script (`scripts.setup` in
     `herdr.yaml`, else Orca's `orca.yaml`; runs first) followed by the project's local script.
@@ -91,9 +93,9 @@ issue, a PR or a new name, with Claude's prompt prefilled. Two mods: `issues` an
   `prefill.sh` (the Claude prompt prefill helper). `mod.json` overlay: frameless dialog 0.92 × 0.9.
 - `mods/new-worktree/`: `main.js` (the dialog), `git.js` (branches, worktrees, PRs, issues),
   `hooks.js` (reads `scripts.setup` from `herdr.yaml`, else `orca.yaml`; builds the hook environment; an identical copy
-  lives in `project-settings`), icons, `mod.json` with `settings.issue_branch`.
+  lives in `project-settings`), icons, `mod.schema.json` (Mod settings: `issue_branch`, `issue_prompt`, `pr_prompt`, defaults included).
 - Project defaults come from shared `projects.settings`, keyed by
-  `JSON.stringify([machine, main checkout])`: `{ base, location, issue_branch, agent, setup,
+  `JSON.stringify([machine, main checkout])`: `{ base, location, issue_branch, issue_prompt, pr_prompt, agent, setup,
   setupWhen: "run" | "skip" | "ask", setupWait }`.
 - Herdr API: `exec`, `openOverlay`/`closeOverlay`, `shared`/`setShared` (`issues.pick`,
   `issues.changed`, and for Projects `issues.tab`, `issues.projectFor`, `issues.projectLists`,
