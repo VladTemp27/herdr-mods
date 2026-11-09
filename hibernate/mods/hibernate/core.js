@@ -118,6 +118,13 @@ export function resumeArgv(e) {
 const q = (s) => (/^[\w@%+=:,./-]+$/.test(s) ? s : `'${String(s).replace(/'/g, `'\\''`)}'`);
 export const commandLine = (e) => `cd ${q(e.cwd)} && ${resumeArgv(e).map(q).join(" ")}`;
 
+// A send from another machine reaches a shell that once ran an agent as a tagged message
+// (`<hc from=...>`), which the shell can't run: so a remote terminal is typed into from its own machine.
+function send(address, text) {
+  const on = machineOf(address);
+  return on ? exec("hc", ["send", address.slice(on.length + 1), text], { on }) : hc(["send", address, text]);
+}
+
 const missing = async (address) => {
   const r = await hc(["get", "--json", address]).catch(() => null);
   return !!r && r.code !== 0 && /"kind":\s*"not_found"/.test(`${r.stdout}${r.stderr}`);
@@ -143,7 +150,7 @@ export async function start(e) {
     // A retry types into this shell instead of opening another.
     e.address = address;
   } else if (!idleShell(g)) return false;
-  const r = await hc(["send", address, commandLine(e)]).catch(() => null);
+  const r = await send(address, commandLine(e)).catch(() => null);
   return r?.code === 0;
 }
 
