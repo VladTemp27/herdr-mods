@@ -41,7 +41,8 @@ running, never the ones you exited yourself.
   Terminals still being recovered are held for 15 minutes.
 - **Settings** (Better Config's Mod settings, or `settings` in `mod.json`):
   - `wake`: `manual` (default: only Wake), `open` (when you go to the space), `start` (once per
-    Herdr launch, when this Mac's spaces have loaded).
+    Herdr launch, each space when its machine has loaded). It spots a launch with macOS's `ps`, so
+    it doesn't fire yet in the Windows or Linux app.
   - `after_restart`: `ask` (default, the dialog), `auto` (resume without asking), `off`.
   Ticking "Resume automatically next time" writes `after_restart: "auto"`.
 - **Asking it from elsewhere**: keys or `herdr-app do` with `hibernate.sleep` / `hibernate.wake`
@@ -50,7 +51,10 @@ running, never the ones you exited yourself.
   (`confirmed: true` skips the busy dialog); the [resource meter](../resources/) does this.
 - It publishes shared `hibernate.sleeping` as `{ <space id>: { at, count } }`, so a sidebar can mark
   sleeping spaces (the Orca layout's shows a moon and "Asleep").
-- This computer's spaces only; a remote space gets a notice.
+- A space on another machine (WSL behind the Windows app, a remote host) works too: its programs
+  are found, stopped and started on that machine through herdr-core. The Windows app's own spaces
+  can't sleep (no `ps` or `kill`). A space whose machine is offline stays asleep, and a wake that
+  can't restart everything keeps the rest asleep.
 
 ## Built from
 
@@ -66,7 +70,8 @@ running, never the ones you exited yourself.
 - Herdr API: `hc` (`get --json`, `ls --json`, `send`, `interrupt`, `run --bg --keep`), `exec`,
   `spaces`, `machines`, `focused`, `shared`/`setShared`, `notify`, `openOverlay`/`closeOverlay`,
   `nextCommand`, `readTextFile`/`writeTextFile`, `fs/promises`.
-- Programs: `kill`, `ps` (Herdr's start time), `pgrep` and `lsof` (Codex sessions).
+- Programs: `kill`, `pgrep` and `lsof` (Codex sessions) on the space's machine, `ps` (Herdr's start
+  time) on this one.
 
 ## Watch out
 
